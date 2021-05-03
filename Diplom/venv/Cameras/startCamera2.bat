@@ -1,0 +1,1 @@
+..\Scripts\python.exe camera2.py
