@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>Вход</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="Style.css" media="screen" />
+    </head>
+    <body>
+        <main>
+            <header>
+                Вход в систему
+            </header>
+            <nav>
+                <a href="/">Главная</a>
+                <a href="/login">Вход</a>
+            </nav>
+            <section>
+                <article>
+                    <form action="/login" method="POST">
+                        {% block content %}
+                            <input type='text' name='userLogin' value=''/>
+                            {{ if value=='n_u' : print("такого пользователя нет") }}</br>
+                            <input type='text' name='userPassw' value=''/>
+                            {{ if value=='n_p' : print("неверный пароль") }}</br>
+                        {% endblock %}
+                        <input type="submit" value="Войти"/>
+                    </form>
+                </article>
+                <article>
+                </article>
+            </section>
+            <footer>
+            </footer>
+        </main>
+    </body>
+</html>
