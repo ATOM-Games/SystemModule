@@ -20,6 +20,20 @@ def getUserByLogin(db, userLogin):
         print("ERROR")
     return res
 
+def getUserAll(db):
+    res = []
+    try:
+        with db.cursor() as cursor:
+            sql = "SELECT * FROM users"
+            cursor.execute(sql)
+            for row in cursor:
+                res.append(row)
+    finally:
+        # DataBaseCon.close()
+        print("ERROR")
+    return res
+	
+	
 def getCameraList(db):
     res = []
     try:
@@ -58,18 +72,20 @@ def stateCamera(db, id, ip, pt, state):
             #sql = "UPDATE cameras SET cam_is_running = '"+state+"' WHERE ID = '"+id+"'"
             sql = "UPDATE cameras SET cam_is_running = '" + state + "' WHERE IP_address='" + ip + "' AND PORT='" + pt + "'"
             cursor.execute(sql)
+            result = cursor.fetchone()
             db.commit()
+            print(result)
             return "good"
     finally:
         print("ERROR")
     return "Other error"
 
-def addCamera(db, ip, pt):
+def addCamera(db, Log, ip, pt):
     res = []
     try:
         with db.cursor() as cursor:
             #sql = "INSERT INTO cameras (IP_address, PORT, cam_is_running, cam_is_allowed) VALUES ('"+ip+"', '"+pt+"', '0', '1')"
-            sql = "CALL addCamera ('"+ip+"', "+pt+")"
+            sql = "CALL addCamera ('"+ip+"', "+pt+", '"+Log+"')"
             cursor.execute(sql)
             result = cursor.fetchone()
             db.commit()
@@ -79,12 +95,12 @@ def addCamera(db, ip, pt):
         print("ERROR")
     return "Other error"
 
-def editCamera(db, id, new_ip, new_pt):
+def editCamera(db, Log, id, new_ip, new_pt):
     res = []
     try:
         with db.cursor() as cursor:
             #sql = "INSERT INTO cameras (IP_address, PORT, cam_is_running, cam_is_allowed) VALUES ('"+ip+"', '"+pt+"', '0', '1')"
-            sql = "CALL editCamera("+id+", '"+new_ip+"', "+new_pt+")"
+            sql = "CALL editCamera("+id+", '"+new_ip+"', "+new_pt+", '"+Log+"')"
             cursor.execute(sql)
             result = cursor.fetchone()
             db.commit()
@@ -94,12 +110,13 @@ def editCamera(db, id, new_ip, new_pt):
         print("ERROR")
     return "Other error"
 
-def deleteCamera(db, id):
+def deleteCamera(db, Log, id):
     res = []
     try:
         with db.cursor() as cursor:
             #sql = "INSERT INTO cameras (IP_address, PORT, cam_is_running, cam_is_allowed) VALUES ('"+ip+"', '"+pt+"', '0', '1')"
-            sql = "CALL deleteCamera("+id+")"
+            cam = getCamera(db, id)
+            sql = "CALL deleteCamera("+id+", '"+cam[0]['IP_address']+"', "+cam[0]['PORT']+", '"+Log+"')"
             cursor.execute(sql)
             result = cursor.fetchone()
             db.commit()
@@ -121,7 +138,7 @@ def getCamera(db, id):
         print("ERROR")
     return "Other error"
 	
-def registraition(db, lgin, nme, fml, passs):
+def registraition(db, Log, lgin, nme, fml, passs):
 	err = ""
 	if lgin == "" or lgin == None :
 		err += "Введите логин"
@@ -142,7 +159,7 @@ def registraition(db, lgin, nme, fml, passs):
 			if nme != "" and fml != "" and passs != "" :
 				try:
 					with db.cursor() as cursor:			
-						sql = "CALL RegistrateUser('"+lgin+"', '"+fml+"', '"+nme+"', '"+passs+"')"
+						sql = "CALL RegistrateUser('"+lgin+"', '"+fml+"', '"+nme+"', '"+passs+"', '"+Log+"')"
 						cursor.execute(sql)
 						result = cursor.fetchone()
 						db.commit()
@@ -151,3 +168,47 @@ def registraition(db, lgin, nme, fml, passs):
 	if err == "" and getUserByLogin(db, lgin)==[] :
 		err += "Проблема с соединением! Повторите попытку позже"
 	return err
+
+#статистика
+def getIPport(db, ip, port, datetime):
+	sql = "Select * From crit_situation WHERE IP = '" + ip + "' AND PORT='"+port+"'"
+	if datetime!="-":
+		sql += " AND Date='"+datetime+"'"
+	res = []
+	try:
+		with db.cursor() as cursor:
+			cursor.execute(sql)
+			for row in cursor:
+				res.append(row)
+	finally:
+		# DataBaseCon.close()
+		print("ERROR")
+	return res
+
+def addCritdb(db, ip, port, date, time, situation):
+	res = []
+	try:
+		with db.cursor() as cursor:
+			sql = "CALL add_crit_situation('"+ip+"', '"+port+"', '"+date+"', '"+time+"', '"+situation+"')"
+			cursor.execute(sql)
+			result = cursor.fetchone()
+			db.commit()
+			print(result)
+			return "good"
+	finally:
+		print("ERROR")
+	return "Other error"
+
+def ad_stat(db, ad):
+	res=[]
+	sql = "Select * From admin_statistics"
+	if ad!="" : sql += " WHERE Login='"+ad+"'"
+	try:
+		with db.cursor() as cursor:
+			cursor.execute(sql)
+			for row in cursor:
+				res.append(row)
+	finally:
+        # DataBaseCon.close()
+		print("ERROR")
+	return res
