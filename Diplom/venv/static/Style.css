@@ -46,4 +46,8 @@ header h3 { width:100%; text-align:center; }
 .cbi { width:100%; margin: 0 auto; margin-top:25px; font-size:16pt;border: 1px solid #555; border-radius: 5px; }
 #string_out, #KS { display:inline-block; margin: 10px 0; }
 #s_tbl { width:100%; }
+#sts { padding:20px; display:block; border: 1px solid #555; }
+#sttb { width:80%; border-collapse: collapse; }
+#sttb td { border: 1px solid #555; border-radius: 5px; background-color: #ddd; }
 
+#sts td { vertical-align:top; }

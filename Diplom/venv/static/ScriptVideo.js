@@ -6,6 +6,7 @@ var b_OnServer_isUniverce = false;
 var str_video="";
 
 var l_ip="", l_pt="";
+var lastCrit=false;
 
 function messageSocket(cls, msg){
 	document.getElementById('c_s').innerHTML = msg;
@@ -13,9 +14,11 @@ function messageSocket(cls, msg){
 }
 
 function createSocket(ip, pt){
+	lastCrit=false;
     socket = new WebSocket("ws://"+ip+":"+pt);
 	l_ip = ip; l_pt = pt;
 	messageSocket('s_h2_y', 'Cоединение...');
+	updateStat("now");
     socket.onopen = function() {
         //alert("Соединение установлено.");
 		messageSocket('s_h2_g', 'Cоединение установлено');
@@ -125,9 +128,9 @@ function stop_monitoring() {
     /*b_OnServer_isFaceRecognize=false;
     b_OnServer_isBodyRecognize=false;*/
     b_OnServer_isUniverce=false;
-	setMessage('off');
     document.getElementById('imgBut_mn').setAttribute("onclick","start_monitor()");
     document.getElementById('imgBut_mn').setAttribute("value","начать мониторинг");
+	setMessage('off');
 }
 function tracking_face() {
     b_OnServer_FaceRecognize=true;
@@ -165,10 +168,14 @@ function OnServer_isUniverce(){
 				    document.getElementById("name").innerHTML = "[ " + message["message"]+" ] ("+document.getElementById('1bf').value+")";
 				}*/
 				mess = 'off';
-				if(document.getElementById('c_s').getAttribute('class')=='s_h2_g') { mess=message["message"]; }
+				if(document.getElementById('imgBut_mn').getAttribute('value')=='остановить мониторинг') { mess=message["message"]; }
 				setMessage(mess);
 				reverce(message["message"]);
 				if(b_OnServer_isUniverce) OnServer_isUniverce();
+				if(mess=='Потеря сознания' && lastCrit==false){
+					addStat();
+					lastCrit=true;
+				}
 			}
 		});
 	}else{ console.log("null"); }
@@ -203,7 +210,7 @@ function setMessage(msg){
 				case 'Потеря сознания' : {
 					document.getElementById("light_signal").setAttribute("src", 'static/light_r.png');
 					document.getElementById("isHK").setAttribute("class", 's_h2_r');
-					document.getElementById("string_out").innerHTML = 'Сотрудник : <b>потеря соединения</b>';
+					document.getElementById("string_out").innerHTML = 'Сотрудник : <b>потеря сознания</b>';
 					break;
 				}
 				case 'Пропал' : {
@@ -232,4 +239,31 @@ function setMessage(msg){
 			}
 		}
 	}
+}
+//--------статистика
+function updateStat(str){
+	$.ajax({
+		url:"http://127.0.0.1:5000/statistics",
+		mode: 'no-cors',
+		type:"POST",
+		contentType:"applicattion/json",
+		dataType:"json",
+		data:JSON.stringify({ sts : "crit", dates : str, l_ip : l_ip, l_pt : l_pt }),
+		success:function(message){
+			document.getElementById("sts").innerHTML = message["message"];
+		}
+	});
+}
+function addStat(){
+	$.ajax({
+		url:"http://127.0.0.1:5000/statistics",
+		mode: 'no-cors',
+		type:"POST",
+		contentType:"applicattion/json",
+		dataType:"json",
+		data:JSON.stringify({ sts : "add_crit", l_ip : l_ip, l_pt : l_pt }),
+		success:function(message){
+			document.getElementById("sts").innerHTML = message["message"];
+		}
+	});
 }
