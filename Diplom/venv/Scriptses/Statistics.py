@@ -5,7 +5,7 @@ from Particle.header import header
 
 dayOfWeek = ['Понедельник','Вторник','Среда','Четверг','Пятница','Суббота','Воскресенье']
 	
-def getToDayStatistics(db,ip, port):
+def getToDayStatistics(db, ip, port):
 	sts = getIPport(db, ip, port, "-")
 	str_html = """<div id="stat"><h1>Статистика пользователя за сегодня</h1>"""
 	if sts==[] :

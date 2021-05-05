@@ -5,6 +5,7 @@ from Scriptses.Login import login, logout
 from Scriptses.Administate import administr
 from Particle.Admin_CID_Cam import *
 from Scriptses.Registarte import *
+from Scriptses.Statistics import *
 
 import websockets as ws
 import asyncio
@@ -134,6 +135,31 @@ def registrate_p():
 	p = request.form.get('new_ps')
 	err = registraition(DataBaseCon, l, n, f, p)
 	return p_adregistrate(DataBaseCon, U_L, l, n, f, p, err)
+	
+@app.route('/statistics')
+def statistics():
+	U_L = request.cookies.get('USER_LOGIN')
+	if request.method == 'GET':
+		if request.args.get('Id') :
+			return admin_statistic(DataBaseCon, U_L, request.args.get('Id'))
+	return admin_statistic(DataBaseCon, U_L, "")
+	
+@app.route('/statistics', methods=['POST'])
+def statistics_p():
+	U_L = request.cookies.get('USER_LOGIN')
+	if request.get_json(force=True)['sts']=='crit':
+		l_ip = request.get_json(force=True)['l_ip']
+		l_pt = request.get_json(force=True)['l_pt']
+		if request.get_json(force=True)['dates']=='now':
+			return jsonify({"message": getToDayStatistics(DataBaseCon, l_ip, l_pt)})
+		else :
+			return jsonify({"message": getAllStatistics(DataBaseCon, l_ip, l_pt)})
+	if request.get_json(force=True)['sts']=='add_crit':
+		l_ip = request.get_json(force=True)['l_ip']
+		l_pt = request.get_json(force=True)['l_pt']
+		rres = addCrit(DataBaseCon, l_ip, l_pt)
+		return jsonify({"message": getToDayStatistics(DataBaseCon, l_ip, l_pt)})
+	return jsonify({"message": "success"})
 	
 #ошибка 404
 @app.errorhandler(404)
