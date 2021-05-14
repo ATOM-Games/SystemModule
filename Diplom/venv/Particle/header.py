@@ -12,7 +12,7 @@ def header(U_L):
 			head += """<input type="button" onclick="window.location.href='/statistics'" class="b_hed" value="Статистика администратора"/>"""
 		head += """</td>
 					<td></td>
-                    <td  width=250px><input type="submit" name="Admine_Logout" value="LogOut" class="b_hed"/></td>
+                    <td  width=250px><input type="submit" name="Admine_Logout" value="Выход" class="b_hed"/></td>
 					</tr></table>
                 </form>"""
 	else:

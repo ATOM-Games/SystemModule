@@ -6,7 +6,8 @@ from Particle.header import header
 dayOfWeek = ['Понедельник','Вторник','Среда','Четверг','Пятница','Суббота','Воскресенье']
 	
 def getToDayStatistics(db, ip, port):
-	sts = getIPport(db, ip, port, "-")
+	dt = str(datetime.now().day)+"."+str(datetime.now().month)+"."+str(datetime.now().year)
+	sts = getIPport(db, ip, port, dt)
 	str_html = """<div id="stat"><h1>Статистика пользователя за сегодня</h1>"""
 	if sts==[] :
 		str_html+="""<h2>Критических ситуаций за сегодня не наблюдалось<h2>"""
@@ -14,14 +15,13 @@ def getToDayStatistics(db, ip, port):
 		str_html+="<table id='sttb'><tr><td><b>Время</b></td><td><b>Ситуация</b></td></tr>"
 		for row in sts:
 			str_html+=("<tr><td>"+row['Time']+"</td><td>"+row['Situation']+"</td></tr>")
-		str_html+="""</table>
+	str_html+="""</table>
 			<table><tr><td width="200px"><input type="button" value="за все время" onclick="updateStat('all')" class="b_hed"/></td><td></td></tr></table>
 		</div>"""
 	return str_html
 	
 def getAllStatistics(db,ip, port):
-	dt = str(datetime.now().day)+"."+str(datetime.now().month)+"."+str(datetime.now().year)
-	sts = getIPport(db, ip, port, dt)
+	sts = getIPport(db, ip, port, "-")
 	str_html = """<div id="stat"><h1>Статистика пользователя за все время</h1>"""
 	if sts==[] :
 		str_html+="""<h2>Критических ситуаций за все время не наблюдалось<h2>"""
@@ -29,7 +29,7 @@ def getAllStatistics(db,ip, port):
 		str_html+="<table id='sttb'><tr><td><b>Дата</b></td><td><b>Время</b></td><td><b>Ситуация</b></td></tr>"
 		for row in sts:
 			str_html+=("<tr><td>"+row['Date']+"</td><td>"+row['Time']+"</td><td>"+row['Situation']+"</td></tr>")
-		str_html+="""</table>
+	str_html+="""</table>
 			<table><tr><td width="200px"><input type="button" value="за сегодня" onclick="updateStat('now')" class="b_hed"/></td><td></td></tr></table>
 		</div>"""
 	return str_html

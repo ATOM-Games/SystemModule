@@ -172,10 +172,12 @@ function OnServer_isUniverce(){
 				setMessage(mess);
 				reverce(message["message"]);
 				if(b_OnServer_isUniverce) OnServer_isUniverce();
-				if(mess=='Потеря сознания' && lastCrit==false){
-					addStat();
-					lastCrit=true;
-				}
+				if(mess=='Потеря сознания'){
+					if(lastCrit==false){
+						addStat();
+						lastCrit=true;
+					}
+				}else{lastCrit=false;}
 			}
 		});
 	}else{ console.log("null"); }
@@ -266,4 +268,36 @@ function addStat(){
 			document.getElementById("sts").innerHTML = message["message"];
 		}
 	});
+	sendToListener();
+}
+var ip_sel_list = '127.0.0.1';
+var pt_sel_list = '5003';
+var sendToList = false;
+function sendToListener(){
+	var d=new Date();
+	var day=d.getDate();
+	var month=d.getMonth() + 1;
+	var year=d.getFullYear();
+	var hour = checkTime(d.getHours());
+	var min = checkTime(d.getMinutes());
+	$.ajax({
+		url:"http://"+ip_sel_list+":"+pt_sel_list+"/poct",
+		mode: 'no-cors',
+		type:"POST",
+		contentType:"applicattion/json",
+		dataType:"json",
+		data:JSON.stringify({ dates : day+"."+month+"."+year, times : hour+":"+min, user : l_ip+":"+l_pt, mess : "Признак потери сознания" }),
+		success:function(message){
+			if(message["message"]=='good'){
+				console.log('Слушатель принял что-то');
+			}else{
+				console.log('Слушатель не принял что-то');
+			}
+		}
+	});
+}
+function checkTime(i)
+{
+	if (i<10) { i="0" + i; }
+	return i;
 }

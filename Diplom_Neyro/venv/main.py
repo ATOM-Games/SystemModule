@@ -102,7 +102,7 @@ def analysOfState(face, body, last_state):
                 return all_states[6]
             if nowState(face, body) == all_states[5] :
                 return all_states[8]
-    return "непонятка"
+    return all_states[5] #непонятка
 
 def nowState(face, body):
     if face: return all_states[0]
