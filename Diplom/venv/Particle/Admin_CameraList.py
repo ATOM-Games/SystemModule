@@ -3,7 +3,7 @@ from Scriptses.DataBase import getCameraList
 
 def getListOfCam(db):
     camers = getCameraList(db)
-    str_html = """<div class="clist">"""
+    str_html = """<div class="clist" id="List_Cameras" style="display:block">"""
     if camers==[] :
         str_html += """not camers"""
     else :

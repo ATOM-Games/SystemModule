@@ -91,7 +91,7 @@ def analysOfState(face, body, last_state):
             if nowState(face, body) == all_states[1] :
                 return all_states[6]
             if nowState(face, body) == all_states[5] :
-                if last_state[1] == all_states[7] and last_state[2] == all_states[7] and last_state[3] == all_states[7] and last_state[3] == all_states[7] :
+                if last_state[1] == all_states[7] and last_state[2] == all_states[7] and last_state[3] == all_states[7] and last_state[4] == all_states[7] :
                     return all_states[8]
                 else :
                     return all_states[7]

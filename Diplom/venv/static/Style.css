@@ -10,8 +10,9 @@ header h3 { width:100%; text-align:center; }
 .b_hed { display:block; padding:10px; width:100%; background-color:#fff; text-decoration:none; text-align:center; border: 2px solid #555; border-radius: 10px; box-shadow: 0 0 0px #555; transition: 0.5s; }
 .b_hed:hover { display:block; padding:10px; width:100%; background-color:#fff; text-decoration:none; text-align:center; border: 2px solid #555; border-radius: 10px; box-shadow: 0 0 10px #555; transition: 0.5s; }
 
-#video_block { width: 400px; height: 300px; border: 1px solid #555; margin-bottom:10px; }
-#r_video_block { width: 400px; height: 300px; border: 1px solid #555; margin-bottom:10px; }
+
+.vidBlock { width: 400px; height: 300px; border: 1px solid #555; margin-bottom:10px; display:inline-block; }
+.vidBlock2 { width: 200px; height: 300px; border: 1px none #555; margin-bottom:10px; display:inline-block; }
 .admin_t { width: 100%; }
 .one_cam_List { display:block; border: 1px solid #555; width: calc(100% - 2px); margin: 0px; }
 .a { border:1px solid #555; margin: 0px; background-color:#fff; text-decoration:none; padding:0px; }
@@ -35,7 +36,7 @@ header h3 { width:100%; text-align:center; }
 
 .fm {  width:60%; margin: 0 auto; }
 
-.brd { border:3px inset #eee; padding:5px;}
+.brd { border:3px inset #eee; padding:5px; display:inline-block; }
 
 .cb { width:90%; margin: 0 auto; margin-top:25px; padding-bottom:20px; }
 .cb_gray { border: 2px solid #555; border-radius: 10px; background-color: #ddd; }

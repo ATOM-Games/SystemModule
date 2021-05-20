@@ -4,6 +4,7 @@ from Scriptses.DataBase import *
 from Scriptses.Login import login, logout
 from Scriptses.Administate import administr
 from Particle.Admin_CID_Cam import *
+from Particle.Admin_CID_List import *
 from Scriptses.Registarte import *
 from Scriptses.Statistics import *
 
@@ -112,13 +113,13 @@ def cid_Cam_z():
     U_L = request.cookies.get('USER_LOGIN')
     if request.method == 'POST':
         if request.form.get('Reg_cam'):
-            res = addCamera(DataBaseCon, request.form['Ip_new_cam'], request.form['Port_new_cam'])
+            res = addCamera(DataBaseCon, U_L, request.form['Ip_new_cam'], request.form['Port_new_cam'])
             return get_create_Result(U_L)
         if request.form.get('Edit_cam'):
-            res = editCamera(DataBaseCon, request.form['Id_cam'], request.form['Ip_cam'], request.form['Port_cam'])
+            res = editCamera(DataBaseCon, U_L, request.form['Id_cam'], request.form['Ip_cam'], request.form['Port_cam'])
             return get_edit_Result(U_L)
         if request.form.get('Delete_cam'):
-            res = deleteCamera(DataBaseCon, request.form['Id_cam'])
+            res = deleteCamera(DataBaseCon, U_L, request.form['Id_cam'])
             return get_delete_Result(U_L)
 
 @app.route('/registrate')
@@ -157,10 +158,40 @@ def statistics_p():
 	if request.get_json(force=True)['sts']=='add_crit':
 		l_ip = request.get_json(force=True)['l_ip']
 		l_pt = request.get_json(force=True)['l_pt']
-		rres = addCrit(DataBaseCon, l_ip, l_pt)
+		rres = addCrit(DataBaseCon, l_ip, l_pt, request.get_json(force=True)['Situation'])
 		return jsonify({"message": getToDayStatistics(DataBaseCon, l_ip, l_pt)})
 	return jsonify({"message": "success"})
-	
+#----------
+@app.route('/CID_List')
+def cid_List():
+    U_L = request.cookies.get('USER_LOGIN')
+    if request.method == 'GET':
+        if request.args.get('Create') :
+            return get_create_Forms_list(U_L)
+        if request.args.get('Edit') :
+            strd = ""+request.args.get('Edit')
+            cam = getListener(DataBaseCon, strd)[0]
+            return get_edit_Form_list(U_L, str(cam['ID']), cam['IP_address'], str(cam['PORT']) )
+        if request.args.get('Delete') :
+            strd = "" + request.args.get('Delete')
+            cam = getListener(DataBaseCon, strd)[0]
+            return get_delit_Form_list(U_L, str(cam['ID']), cam['IP_address'], str(cam['PORT']) )
+    return get_default_Forms_list(U_L)
+
+@app.route('/CID_List', methods=['POST'])
+def cid_List_z():
+    print("or POST or GET")
+    U_L = request.cookies.get('USER_LOGIN')
+    if request.method == 'POST':
+        if request.form.get('Reg_cam'):
+            res = addListener(DataBaseCon, U_L, request.form['Ip_new_cam'], request.form['Port_new_cam'])
+            return get_create_Result_list(U_L)
+        if request.form.get('Edit_cam'):
+            res = editListener(DataBaseCon, U_L, request.form['Id_cam'], request.form['Ip_cam'], request.form['Port_cam'])
+            return get_edit_Result_list(U_L)
+        if request.form.get('Delete_cam'):
+            res = deleteListener(DataBaseCon, U_L, request.form['Id_cam'])
+            return get_delete_Result_list(U_L)
 #ошибка 404
 @app.errorhandler(404)
 def not_found(error):

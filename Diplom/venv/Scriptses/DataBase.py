@@ -212,3 +212,72 @@ def ad_stat(db, ad):
         # DataBaseCon.close()
 		print("ERROR")
 	return res
+	
+#--------------
+def addListener(db, Log, ip, pt):
+    res = []
+    try:
+        with db.cursor() as cursor:
+            sql = "CALL add_listener ('"+ip+"', "+pt+", '"+Log+"')"
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            db.commit()
+            print(result)
+            return "good"
+    finally:
+        print("ERROR")
+    return "Other error"
+
+def editListener(db, Log, id, new_ip, new_pt):
+    res = []
+    try:
+        with db.cursor() as cursor:
+            sql = "CALL edit_listener("+id+", '"+new_ip+"', "+new_pt+", '"+Log+"')"
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            db.commit()
+            print(result)
+            return "good"
+    finally:
+        print("ERROR")
+    return "Other error"
+
+def deleteListener(db, Log, id):
+    res = []
+    try:
+        with db.cursor() as cursor:
+            lists = getListener(db, id)
+            sql = "CALL delete_listener("+id+", '"+lists[0]['IP_address']+"', "+lists[0]['PORT']+", '"+Log+"')"
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            db.commit()
+            print(result)
+            return "good"
+    finally:
+        print("ERROR")
+    return "Other error"
+
+def getListener(db, id):
+    res = []
+    try:
+        with db.cursor() as cursor:
+            sql = "Select * From listener WHERE ID = '" + id + "'"
+            cursor.execute(sql)
+            for row in cursor: res.append(row)
+            return res
+    finally:
+        print("ERROR")
+    return "Other error"
+
+def getListenerList(db):
+    res = []
+    try:
+        with db.cursor() as cursor:
+            sql = "SELECT * FROM listener"
+            cursor.execute(sql)
+            for row in cursor:
+                res.append(row)
+    finally:
+        # DataBaseCon.close()
+        print("ERROR")
+    return res

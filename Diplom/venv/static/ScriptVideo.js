@@ -7,6 +7,11 @@ var str_video="";
 
 var l_ip="", l_pt="";
 var lastCrit=false;
+var lastOnWork=false;
+//------настройки
+var fix_crit=true;
+var fix_onwork=false;
+var fix_time=1;
 
 function messageSocket(cls, msg){
 	document.getElementById('c_s').innerHTML = msg;
@@ -15,6 +20,7 @@ function messageSocket(cls, msg){
 
 function createSocket(ip, pt){
 	lastCrit=false;
+	lastOnWork=false;
     socket = new WebSocket("ws://"+ip+":"+pt);
 	l_ip = ip; l_pt = pt;
 	messageSocket('s_h2_y', 'Cоединение...');
@@ -122,6 +128,7 @@ function start_monitor() {
 		OnServer_isUniverce();
 		document.getElementById('imgBut_mn').setAttribute("onclick","stop_monitoring()");
 		document.getElementById('imgBut_mn').setAttribute("value","остановить мониторинг");
+		setTimeout(NewReverce, fix_time);
 	}
 }
 function stop_monitoring() {
@@ -172,21 +179,33 @@ function OnServer_isUniverce(){
 				setMessage(mess);
 				reverce(message["message"]);
 				if(b_OnServer_isUniverce) OnServer_isUniverce();
-				if(mess=='Потеря сознания'){
+				//--потеря сознания
+				if(fix_crit==true && mess=='Потеря сознания'){
 					if(lastCrit==false){
-						addStat();
+						addStat('Потеря сознания');
 						lastCrit=true;
 					}
 				}else{lastCrit=false;}
+				//--потеря сознания
+				if(fix_onwork==true && isWork()==true){
+					if(lastOnWork==false){
+						addStat('Не на рабочем месте');
+						lastOnWork=true;
+					}
+				}else{lastOnWork=false;}
 			}
 		});
 	}else{ console.log("null"); }
 }
-function reverce(newvalue){
-    document.getElementById('5bf').setAttribute("value", document.getElementById('4bf').value);
+function NewReverce(){
+	document.getElementById('5bf').setAttribute("value", document.getElementById('4bf').value);
     document.getElementById('4bf').setAttribute("value", document.getElementById('3bf').value);
     document.getElementById('3bf').setAttribute("value", document.getElementById('2bf').value);
     document.getElementById('2bf').setAttribute("value", document.getElementById('1bf').value);
+	if(b_OnServer_isUniverce)setTimeout(NewReverce, fix_time);
+}
+
+function reverce(newvalue){
     document.getElementById('1bf').setAttribute("value", newvalue);
 }
 function clearstate(){
@@ -256,14 +275,14 @@ function updateStat(str){
 		}
 	});
 }
-function addStat(){
+function addStat(sit){
 	$.ajax({
 		url:"http://127.0.0.1:5000/statistics",
 		mode: 'no-cors',
 		type:"POST",
 		contentType:"applicattion/json",
 		dataType:"json",
-		data:JSON.stringify({ sts : "add_crit", l_ip : l_ip, l_pt : l_pt }),
+		data:JSON.stringify({ sts : "add_crit", l_ip : l_ip, l_pt : l_pt, Situation : sit }),
 		success:function(message){
 			document.getElementById("sts").innerHTML = message["message"];
 		}
@@ -301,3 +320,34 @@ function checkTime(i)
 	if (i<10) { i="0" + i; }
 	return i;
 }
+function DisplayPanel(cam_lis){
+	if(cam_lis=="cam"){
+		document.getElementById('List_Listeners').setAttribute('style','display:none');
+		document.getElementById('Sittings').setAttribute('style','display:none');
+		document.getElementById('List_Cameras').setAttribute('style','display:block');
+	}
+	if(cam_lis=="list"){
+		document.getElementById('List_Cameras').setAttribute('style','display:none');
+		document.getElementById('Sittings').setAttribute('style','display:none');
+		document.getElementById('List_Listeners').setAttribute('style','display:block');
+	}
+	if(cam_lis=="nas"){
+		document.getElementById('List_Cameras').setAttribute('style','display:none');
+		document.getElementById('List_Listeners').setAttribute('style','display:none');
+		document.getElementById('Sittings').setAttribute('style','display:block');
+	}
+}
+
+function isWork(){
+	return ((document.getElementById('1bf').getAttribute("value") == 'Ушел' || document.getElementById('1bf').getAttribute("value") == 'Отсутствует') &&
+		(document.getElementById('2bf').getAttribute("value") == 'Ушел' || document.getElementById('2bf').getAttribute("value") == 'Отсутствует') &&
+		(document.getElementById('3bf').getAttribute("value") == 'Ушел' || document.getElementById('3bf').getAttribute("value") == 'Отсутствует') &&
+		(document.getElementById('4bf').getAttribute("value") == 'Ушел' || document.getElementById('4bf').getAttribute("value") == 'Отсутствует') &&
+		(document.getElementById('5bf').getAttribute("value") == 'Ушел' || document.getElementById('5bf').getAttribute("value") == 'Отсутствует'));
+}
+function SaveSittings(){
+	fix_onwork = document.getElementById('ch1').checked;
+	fix_crit = document.getElementById('ch2').checked;
+	fix_time = parseInt(document.getElementById('ch3').value, 10)*200; 
+}
+SaveSittings();

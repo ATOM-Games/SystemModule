@@ -34,10 +34,10 @@ def getAllStatistics(db,ip, port):
 		</div>"""
 	return str_html
 	
-def addCrit(db, ip, port):
+def addCrit(db, ip, port, Situation):
 	dt = str(datetime.now().day)+"."+str(datetime.now().month)+"."+str(datetime.now().year)
 	tm = str(datetime.now().hour)+"."+str(datetime.now().minute)
-	return addCritdb(db, ip, port, dt, tm, "Потеря сознания")
+	return addCritdb(db, ip, port, dt, tm, Situation)
 	
 def admin_statistic(db, Log, who):
 	str_html = getHead("Администратор")
