@@ -23,12 +23,12 @@ def index():
 		html_str+= "<h1>Слушатель готов</h1>"
 	else :
 		html_str+= """<h1>Отчет</h1>
-		<table>
-		<tr><td>Дата</td><td>"""+report['dates']+"""</td></tr>
-		<tr><td>Время</td><td>"""+report['times']+"""</td></tr>
-		<tr><td>Пользователь</td><td>"""+report['user']+"""</td></tr>
-		<tr><td>Событие</td><td>"""+report['mess']+"""</td></tr>
-		</table></br><input type="button" value="Очистить отчет" onclick="clearReport('"""+params["address"]+"""','"""+params["port"]+"""')"/>"""
+		<table style="border-collapse : collapse;">
+		<tr><td style="border : 1px solid #000; padding : 5px;">Дата</td><td style="border : 1px solid #000; padding : 5px;">"""+report['dates']+"""</td></tr>
+		<tr><td style="border : 1px solid #000; padding : 5px;">Время</td><td style="border : 1px solid #000; padding : 5px;">"""+report['times']+"""</td></tr>
+		<tr><td style="border : 1px solid #000; padding : 5px;">Пользователь</td><td style="border : 1px solid #000; padding : 5px;">"""+report['user']+"""</td></tr>
+		<tr><td style="border : 1px solid #000; padding : 5px;">Событие</td><td style="border : 1px solid #000; padding : 5px;">"""+report['mess']+"""</td></tr>
+		</table></br><input type="button" value="Очистить отчет" onclick="clearReport('"""+params["address"]+"""','"""+params["port"]+"""')" style="display : block; padding : 10px; width : 200px; font-weight : bold; color : 000; background-color : #fff; text-decoration : none; text-align : center; border : 1px solid #111; border-radius : .3rem; box-shadow  : 0 0 0px #555;"/>"""
 	html_str +="""<script src="static/jQuery3.js"></script><script type="text/javascript" src="static/Script.js"></script>"""
 	return html_str
 	

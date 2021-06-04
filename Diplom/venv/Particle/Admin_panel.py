@@ -13,9 +13,8 @@ def getAdmin():
 		
 		<table id="s_tbl">
 			<tr id="isHK" class="s_h2">
-				<td><h2 id="string_out">Сотрудник : <i>(наблюдение не ведется)</i></h2></td>
-				<td width="400px"></td>
-				<td width="270px"><h2 id="KS">Критическая ситуация : </h2></td><td width="50px"><img id="light_signal" src="static/light_off.png"/></td>
+				<td width="900px"><h2 id="string_out">Диспетчер : <i>(наблюдение не ведется)</i></h2></td>
+				<td width="270px"><h2 id="KS">Состояние здоровья : </h2></td><td width="50px"><img id="light_signal" src="static/light_off.png"/></td>
 			</tr>
 		</table>
 		

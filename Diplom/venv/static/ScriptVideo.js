@@ -220,42 +220,42 @@ function setMessage(msg){
 	if(msg=='off'){
 		document.getElementById("light_signal").setAttribute("src", 'static/light_off.png');
 		document.getElementById("isHK").setAttribute("class", 's_h2');
-		document.getElementById("string_out").innerHTML = 'Сотрудник : <i>(наблюдение не ведется)</i>';
+		document.getElementById("string_out").innerHTML = 'Диспетчер : <i>(наблюдение не ведется)</i>';
 	}else{
 		if(document.getElementById('5bf').value=='-') {
 			document.getElementById("isHK").setAttribute("class", 's_h2_y');
-			document.getElementById("string_out").innerHTML = 'Сотрудник : <i>(подготовка к анализу)</i>';
+			document.getElementById("string_out").innerHTML = 'Диспетчер : <i>(подготовка к анализу)</i>';
 			document.getElementById("light_signal").setAttribute("src", 'static/light_off.png');
 		}else{
 			switch (msg){ //'Лицо', 'Тело', 'Встал', 'Сел', 'Ушел', 'Отсутствует', 'Пришел', 'Пропал', 'Потеря сознания'
 				case 'Потеря сознания' : {
 					document.getElementById("light_signal").setAttribute("src", 'static/light_r.png');
 					document.getElementById("isHK").setAttribute("class", 's_h2_r');
-					document.getElementById("string_out").innerHTML = 'Сотрудник : <b>потеря сознания</b>';
+					document.getElementById("string_out").innerHTML = 'Диспетчер : <b>потеря сознания</b>';
 					break;
 				}
 				case 'Пропал' : {
 					document.getElementById("light_signal").setAttribute("src", 'static/light_y.png');
 					document.getElementById("isHK").setAttribute("class", 's_h2_y');
-					document.getElementById("string_out").innerHTML = 'Сотрудник : <b>пропал</b>';
+					document.getElementById("string_out").innerHTML = 'Диспетчер : <b>пропал</b>';
 					break;
 				}
 				case 'Отсутствует' : {
 					document.getElementById("light_signal").setAttribute("src", 'static/light_g.png');
 					document.getElementById("isHK").setAttribute("class", 's_h2_y');
-					document.getElementById("string_out").innerHTML = 'Сотрудник : <b>не на рабочем месте</b>';
+					document.getElementById("string_out").innerHTML = 'Диспетчер : <b>не на рабочем месте</b>';
 					break;
 				}
 				case 'Ушел' : {
 					document.getElementById("light_signal").setAttribute("src", 'static/light_g.png');
 					document.getElementById("isHK").setAttribute("class", 's_h2_y');
-					document.getElementById("string_out").innerHTML = 'Сотрудник : <b>не на рабочем месте</b>';
+					document.getElementById("string_out").innerHTML = 'Диспетчер : <b>не на рабочем месте</b>';
 					break;
 				}
 				default :{
 					document.getElementById("light_signal").setAttribute("src", 'static/light_g.png');
 					document.getElementById("isHK").setAttribute("class", 's_h2_g');
-					document.getElementById("string_out").innerHTML = 'Сотрудник : <b>на рабочем месте</b>';
+					document.getElementById("string_out").innerHTML = 'Диспетчер : <b>на рабочем месте</b>';
 				}
 			}
 		}
