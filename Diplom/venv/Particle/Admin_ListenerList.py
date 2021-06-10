@@ -5,7 +5,7 @@ def getListOfList(db):
     camers = getListenerList(db)
     str_html = """<div class="clist" id="List_Listeners" style="display:none">"""
     if camers==[] :
-        str_html += """Нет слушателей"""
+        str_html += """Нет подписчиков"""
     else :
         for row in camers:
             str_html += """
@@ -17,6 +17,6 @@ def getListOfList(db):
             """
 
     str_html += """<p class="one_cam_List">
-						<input type='button' class="mbp" value='новый слушатель' onclick="window.location.href='/CID_List?Create=Создать'"/>
+						<input type='button' class="mbp" value='новый подписчик' onclick="window.location.href='/CID_List?Create=Создать'"/>
 					</p></div>"""
     return str_html

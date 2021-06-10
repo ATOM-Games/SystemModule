@@ -134,7 +134,7 @@ def registrate_p():
 	n = request.form.get('new_nm')
 	l = request.form.get('new_lg')
 	p = request.form.get('new_ps')
-	err = registraition(DataBaseCon, l, n, f, p)
+	err = registraition(DataBaseCon, U_L, l, n, f, p)
 	return p_adregistrate(DataBaseCon, U_L, l, n, f, p, err)
 	
 @app.route('/statistics')
@@ -171,11 +171,11 @@ def cid_List():
         if request.args.get('Edit') :
             strd = ""+request.args.get('Edit')
             cam = getListener(DataBaseCon, strd)[0]
-            return get_edit_Form_list(U_L, str(cam['ID']), cam['IP_address'], str(cam['PORT']) )
+            return get_edit_Form_list(U_L, str(cam['ID']).__str__(), cam['IP_address'], cam['Port'].__str__() )
         if request.args.get('Delete') :
             strd = "" + request.args.get('Delete')
             cam = getListener(DataBaseCon, strd)[0]
-            return get_delit_Form_list(U_L, str(cam['ID']), cam['IP_address'], str(cam['PORT']) )
+            return get_delit_Form_list(U_L, str(cam['ID']).__str__(), cam['IP_address'], cam['Port'].__str__() )
     return get_default_Forms_list(U_L)
 
 @app.route('/CID_List', methods=['POST'])

@@ -247,7 +247,7 @@ def deleteListener(db, Log, id):
     try:
         with db.cursor() as cursor:
             lists = getListener(db, id)
-            sql = "CALL delete_listener("+id+", '"+lists[0]['IP_address']+"', "+lists[0]['PORT']+", '"+Log+"')"
+            sql = "CALL delete_listener("+id+", '"+lists[0]['IP_address']+"', "+lists[0]['Port'].__str__()+", '"+Log+"')"
             cursor.execute(sql)
             result = cursor.fetchone()
             db.commit()
